@@ -1,0 +1,53 @@
+Login
+	register with Modal
+
+
+Home
+	search bar by location on the nav bar
+
+	on the nav bar have each sport clickable to take you to the specific sports 
+	page to show upcoming events
+
+	filler static info about our story / testimonials
+
+
+User Page
+	with CRUD tasks linked
+
+	location of home city
+
+	list of created events
+	
+
+
+Event Page
+	with CRUD tasks linked
+	weather and map api 
+
+	comment section for event
+
+
+\
+
+features
+	
+	Pictures in the background related to the sport
+
+	user can browse entire site without being logged in, however if they try to 
+	create an event or add a comment it will redirect them to the login/reg page
+
+	edit features only available to creators of object
+
+MVP
+
+	have a tier for users such as Super Admin, Admin, Power User, User
+	
+	implement more sports in the future
+
+	
+
+	
+	
+	
+	
+

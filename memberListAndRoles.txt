@@ -1,0 +1,4 @@
+Bryce Vargo - models / views / css
+Hannah Vangness - Login/Reg/Home
+Amanda Posada - views / css
+Ananya Kaiser - event and user pages
