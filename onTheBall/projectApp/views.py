@@ -273,7 +273,7 @@ def attendEvent(request, event_id):
     eventToAttend.attending.add(userToAttend)
     return redirect('/home')
 
-def unattendEvent(request, event_id):
+def unattendedEvent(request, event_id):
     if 'user_id' not in request.session:
         return redirect('/')
     loggedIN = request.session['user_id']
