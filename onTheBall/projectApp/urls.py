@@ -29,4 +29,5 @@ urlpatterns = [
     path('reply/<int:post_id>/delete', views.deleteReply),
     # available
     path('sorted', views.allEvents),
+    path('test', views.test)
 ]

@@ -294,3 +294,6 @@ def unattendedEvent(request, event_id):
     event = Event.objects.get(id=event_id)
     event.attending.remove(loggedIN)
     return redirect('/home')
+
+def test(request):
+    return render(request, 'nav.html')
