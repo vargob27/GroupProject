@@ -1,0 +1,12 @@
+#nav{
+    width: 800px;
+    list-style: none;
+    background-color: red;
+    border-radius: 5px;
+    font-size: 20px;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 25px;
+    margin: 20px auto;
+    box-shadow: 2px 2px 2px black;
+}

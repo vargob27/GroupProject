@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    {% load static %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css"/>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+</head>
+<body>
+    <section class="section">
+        <div class="container">
+            <ul id="nav">
+                <li><a href="">Need to Fill in </a></li>
+                <li><a href="">Need to Fill in </a></li>
+                <li><a href="">Need to Fill in </a></li>
+                <li><a href="">Need to Fill in </a></li>
+                <li><a href="">Need to Fill in </a></li>
+            </ul>
+            <form action="/user/{{user.id}}/update" method="POST">
+                {% csrf_token %}
+                <h1>Edit Profile</h1>
+                <div class="form_section">
+                    <label for="firstname">First Name:</label>
+                    <input type="text" name="firstname" class="form_info" value="{{user.first_name}}" required>
+                </div>
+                <div class="form_section">
+                    <label for="lastname">Last Name:</label>
+                    <input type="text" name="lastname" class="form_info" value="{{user.last_name}}" required>
+                </div>
+                <div class="form_section">
+                    <label for="email">Email:</label>
+                    <input type="email" name="email" class="form_info" value="{{user.email}}" required>
+                </div>
+                <div class="form_section">
+                    <label for="dob">Dob:</label>
+                    <input type="dob" name="dob" class="form_info" value="{{user.dob}}" required>
+                </div>
+                <div class="form_section">
+                    <label for="location">Location:</label>
+                    <input type="location" name="location" class="form_info" value="{{user.location}}" required>
+                </div>
+                <input type="submit" value="Submit" class="editProfile_button">
+        </div>
+    </section>
+</body>

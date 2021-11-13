@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Event</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" />
+    {% load static %}
+</head>
+
+<body>
+    <section class="section">
+        <div class="container">
+            <ul id="nav">
+                <li><a href="">Need to Fill in </a></li>
+                <li><a href="">Need to Fill in </a></li>
+                <li><a href="">Need to Fill in </a></li>
+                <li><a href="">Need to Fill in </a></li>
+                <li><a href="">Need to Fill in </a></li>
+            </ul>
+            <form action="/event/{{event.id}}/update" method="POST">
+                {% csrf_token %}
+                <h1>Edit Event</h1>
+                <div class="form_section">
+                    <label for="title">Title:</label>
+                    <input type="title" name="title" class="form_info" value="{{user.title}}" required>
+                </div>
+                <div class="form_section">
+                    <label for="description">Description:</label>
+                    <input type="text" name="description" class="form_info" value="{{user.description}}" required>
+                </div>
+                <div class="form_section">
+                    <label for="sport">Sport:</label>
+                    <input type="sport" name="sport" class="form_info" value="{{user.sport}}" required>
+                </div>
+                <div class="form_section">
+                    <label for="city">City:</label>
+                    <input type="city" name="city" class="form_info" value="{{user.city}}" required>
+                </div>
+                <div class="form_section">
+                    <label for="address">Address:</label>
+                    <input type="address" name="address" class="form_info" value="{{user.address}}" required>
+                </div>
+                <div class="form_section">
+                    <label for="day">Day:</label>
+                    <input type="day" name="day" class="form_info" value="{{user.day}}" required>
+                </div>
+                <div class="form_section">
+                    <label for="age_restricted">Age Restricted:</label>
+                    <input type="age_restricted" name="age_restricted" class="form_info" value="{{user.age_restricted}}"
+                        required>
+                </div>
+                <input type="submit" value="Submit" class="editEvent_button">
+        </div>
+    </section>
+</body>
