@@ -23,7 +23,7 @@ urlpatterns = [
     path('comment/<int:post_id>/edit', views.editComment),
     path('comment/<int:post_id>/update', views.updateComment),
     path('comment/<int:post_id>/delete', views.deleteComment),
-    path('reply/<int:post_id>', views.reply),
+    path('reply/<int:post_id>', views.Reply),
     path('reply/<int:post_id>/edit', views.editReply),
     path('reply/<int:post_id>/update', views.updateReply),
     path('reply/<int:post_id>/delete', views.deleteReply),
