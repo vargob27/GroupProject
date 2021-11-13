@@ -1,3 +1,4 @@
+import requests
 from django.shortcuts import render, redirect
 from django.contrib import messages, admin
 from .models import *
@@ -190,12 +191,25 @@ def allEvents(request):
     return render(request, 'allEvents.html', context)
 
 def event(request, event_id):
-    if 'user_id' not in request.session:
-        return redirect('/')
+    event = Event.objects.get(id=event_id)
+    cityname = event.city
+    apikey = 'c34754078c4106b2991a642eea434c58'
+    url = f'http://api.openweathermap.org/data/2.5/weather?q={cityname}&units=imperial&appid={apikey}'
+    r = requests.get(url).json()
+    city_weather = {
+        'city' : 'Tampa',
+        'temperature' : r['main']['temp'],
+        'description' : r['weather'][0]['description'],
+        'icon' : r['weather'][0]['icon'],
+    }
+    weather_data = []
+    weather_data.append(city_weather)
+
     context = {
         'user': User.objects.get(id=request.session['user_id']),
         'event': Event.objects.get(id=event_id),
         'loggedIn': User.objects.get(id=request.session['user_id']),
+        'weather_data' : weather_data,
     }
     return render(request, 'event.html', context)
 
