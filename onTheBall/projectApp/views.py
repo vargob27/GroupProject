@@ -22,8 +22,12 @@ def register(request):
             request.POST['password'].encode(), bcrypt.gensalt()).decode()
     # create User
         new_user = User.objects.create(
-            first_name=request.POST['first_name'], last_name=request.POST[
-                'last_name'], email=request.POST['email'], password=hashed_pw
+            first_name=request.POST['first_name'], 
+            last_name=request.POST['last_name'], 
+            email=request.POST['email'], 
+            password=hashed_pw,
+            dob=request.POST['dob'],
+            location=request.POST['location'],
         )
     # create session
         request.session['user_id'] = new_user.id
@@ -44,31 +48,34 @@ def login(request):
 
 def logout(request):
     request.session.flush()
-    return redirect('/')
+    return redirect('/home')
 
 def success(request):
     if 'user_id' not in request.session:
-        return redirect('/')
+        return render(request, 'index.html')
     this_user = User.objects.filter(id=request.session['user_id'])
     context = {
         'user': this_user[0],
     }
-    return render(request, 'home.html', context)
+    return render(request, 'index.html', context)
 
-def comment(request):
+def comment(request, event_id):
     if 'user_id' not in request.session:
         return redirect('/')
+    event = Event.objects.get(id=event_id)
     Comment_Thread.objects.create(
         message=request.POST['message'],
-        poster=User.objects.get(id=request.session['user_id'])
+        poster=User.objects.get(id=request.session['user_id']),
+        event= event
         )
-    return redirect('/')
+    return redirect(f'/event/{event_id}')
 
 def editComment(request, post_id):
     if 'user_id' not in request.session:
         return redirect('/')
     context = {
-        'comment': Comment_Thread.objects.get(id=post_id)
+        'comment': Comment_Thread.objects.get(id=post_id),
+        'event': Event.objects.get(id=event_id)
     }
     return render(request, 'editComment.html', context)
 
@@ -90,63 +97,28 @@ def deleteComment(request, post_id):
     to_delete.delete()
     return redirect('/home')
 
-def Reply(request, post_id):
-    if 'user_id' not in request.session:
-        return redirect('/')
-    poster = User.objects.get(id=request.session['user_id'])
-    message = Comment_Thread.objects.get(id=post_id)
-    Reply.objects.create(
-        comment=request.POST['reply'],
-        poster = poster,
-        original_post = message
-        )
-    return redirect('/success')
-
-def editReply(request, post_id):
-    if 'user_id' not in request.session:
-        return redirect('/')
-    context = {
-        'reply': Reply.objects.get(id=post_id)
-    }
-    return render(request, 'editReply.html', context)
-
-def updateReply(request, post_id):
-    if 'user_id' not in request.session:
-        return redirect('/')
-    to_update = Reply.objects.get(id=post_id)
-    to_update.reply = request.POST['reply']
-    to_update.save()
-    return redirect('/')
-
-def deleteReply(request, post_id):
-    if 'user_id' not in request.session:
-        return redirect('/')
-    to_delete = Reply.objects.get(id=post_id)
-    if request.session['user_id'] != to_delete.poster.id:
-        messages.error(request, 'You are not the creator of the comment you are trying to delete!')
-        return redirect('/home')
-    to_delete.delete()
-    return redirect('/home')
-
-def add_like(request, id):
+def add_like(request, event_id, id):
     if 'user_id' not in request.session:
         return redirect('/')
     liked_message = Comment_Thread.objects.get(id=id)
     user_liking = User.objects.get(id=request.session['user_id'])
-    liked_message.user_likes.add(user_liking)
-    return redirect('/success')
+    liked_message.likes.add(user_liking)
+    return redirect(f'/event/{event_id}')
 
-def remove_like(request, id):
+def remove_like(request, event_id, id):
     if 'user_id' not in request.session:
         return redirect('/')
     liked_message = Comment_Thread.objects.get(id=id)
     user_liking = User.objects.get(id=request.session['user_id'])
-    liked_message.user_likes.remove(user_liking)
-    return redirect('/success')
+    liked_message.likes.remove(user_liking)
+    return redirect(f'/event/{event_id}')
 
 def profile(request, user_id):
+    user = User.objects.get(id=user_id)
     context = {
-        'user': User.objects.get(id=user_id)
+        'user': User.objects.get(id=user_id),
+        'events': user.createdEvents.all(),
+        'loggedIn': User.objects.get(id=request.session['user_id']),
     }
     
     return render(request, 'profile.html', context)
@@ -201,7 +173,7 @@ def event(request, event_id):
         'temperature' : r['main']['temp'],
         'description' : r['weather'][0]['description'],
         'icon' : r['weather'][0]['icon'],
-    }
+        }
     weather_data = []
     weather_data.append(city_weather)
 
@@ -210,7 +182,8 @@ def event(request, event_id):
         'event': Event.objects.get(id=event_id),
         'loggedIn': User.objects.get(id=request.session['user_id']),
         'weather_data' : weather_data,
-    }
+        'comments': event.event_messages.all()
+        }
     return render(request, 'event.html', context)
 
 def createEvent(request):
@@ -228,11 +201,10 @@ def createEvent(request):
     Event.objects.create(
         title = request.POST['title'],
         description = request.POST['description'],
-        sport = request.POST['sport'],
+        sport = request.POST['sport'].lower(),
         city = request.POST['city'],
         address = request.POST['address'],
         day = request.POST['day'],
-        age_restricted = request.POST['age_restricted'],
         creator = User.objects.get(id=request.session['user_id'])
     )
     return redirect('/home')
@@ -261,11 +233,10 @@ def updateEvent(request, event_id):
     to_update = Event.objects.get(id=event_id)
     to_update.title = request.POST['title']
     to_update.description = request.POST['description']
-    to_update.sport = request.POST['sport']
+    to_update.sport = request.POST['sport'].lower()
     to_update.city = request.POST['city']
     to_update.address = request.POST['address']
     to_update.day = request.POST['day']
-    to_update.age_restricted = request.POST['age_restricted']
     to_update.save()
     return redirect('/home')
 
@@ -295,5 +266,14 @@ def unattendedEvent(request, event_id):
     event.attending.remove(loggedIN)
     return redirect('/home')
 
+def find(request, sport):
+    sorted_events = Event.objects.filter(sport=sport)
+    this_user = User.objects.filter(id=request.session['user_id'])
+    context = {
+        'events': sorted_events,
+        'user': this_user[0],
+    }
+    return render(request, 'sortedEvents.html', context)
+
 def test(request):
-    return render(request, 'nav.html')
+    return render(request, 'index.html')

@@ -142,9 +142,8 @@ class Event(models.Model):
     city = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
     day = models.DateField()
-    age_restricted = models.BooleanField(default=False)
     attending = models.ManyToManyField(User, related_name='attendingEvents')
-    creator = models.ManyToManyField(User, related_name='createdEvents')
+    creator = models.ForeignKey(User, related_name='createdEvents', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = EventManager()
@@ -154,6 +153,7 @@ class Event(models.Model):
 class Comment_Thread(models.Model):
     message = models.CharField(max_length=500)
     poster = models.ForeignKey(User, related_name='user_messages', on_delete=CASCADE)
+    event = models.ForeignKey(Event, related_name='event_messages', on_delete=CASCADE)
     likes = models.ManyToManyField(User, related_name='liked_posts')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
