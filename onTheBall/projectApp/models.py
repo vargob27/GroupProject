@@ -1,6 +1,7 @@
 from django.db import models
 import re
-
+from datetime import date
+from datetime import datetime
 from django.db.models.deletion import CASCADE
 import bcrypt
 EMAIL_REGEX = re.compile('^[_a-z0-9-]+(.[_a-z0-9-]+)@[a-z0-9-]+(.[a-z0-9-]+)(.[a-z]{2,4})$')

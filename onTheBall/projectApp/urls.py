@@ -2,7 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.index),
+    path('', views.success),
     path('register', views.register),
     path('login', views.login),
     path('logout', views.logout),
@@ -22,7 +22,7 @@ urlpatterns = [
     path('comment/<int:event_id>', views.comment),
     path('<int:event_id>/comment/<int:post_id>/edit', views.editComment),
     path('<int:event_id>/comment/<int:post_id>/update', views.updateComment),
-    path('comment/<int:post_id>/delete', views.deleteComment),
+    path('<int:event_id>/comment/<int:post_id>/delete', views.deleteComment),
     path('find/<str:sport>', views.find),
     # available
     path('sorted', views.allEvents),

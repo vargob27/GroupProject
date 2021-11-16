@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Profile</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
-    <link rel="shortcut icon" type="image/png" href="static/images/favicon.png">
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.png' %}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
@@ -82,6 +82,7 @@
                     <input type="text" name="location" class="form_info" value="{{user.location}}" required>
                 </div>
                 <input type="submit" value="Submit" class="editProfile_button">
+            </form>
         </div>
     </section>
     <!-- Event Modal -->
@@ -109,7 +110,7 @@
                                 <option value="Basketball">Basketball</option>
                                 <option value="Soccer">Soccer</option>
                                 <option value="Tennis">Tennis</option>
-                                <option value="Golf">Golf</option>
+                                <option value="Baseball">Baseball</option>
                             </select>
                         </div>
                         <div class="form-group">
