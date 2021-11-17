@@ -181,7 +181,7 @@ def event(request, event_id):
         url = f'http://api.openweathermap.org/data/2.5/weather?q={cityname}&units=imperial&appid={apikey}'
         r = requests.get(url).json()
         city_weather = {
-            'city' : 'Tampa',
+            'city' : cityname,
             'temperature' : r['main']['temp'],
             'description' : r['weather'][0]['description'],
             'icon' : r['weather'][0]['icon'],
