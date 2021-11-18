@@ -73,11 +73,6 @@ def comment(request, event_id):
 def editComment(request, event_id, post_id):
     if 'user_id' not in request.session:
         return redirect('/')
-    errors = Comment_Thread.objects.comment_validator(request.POST)
-    if len(errors) != 0:
-        for key, value in errors.items():
-            messages.error(request, value)
-        return redirect(f'/event/{event_id}')
     context = {
         'comment': Comment_Thread.objects.get(id=post_id),
         'event': Event.objects.get(id=event_id)
@@ -201,7 +196,7 @@ def event(request, event_id):
     url = f'http://api.openweathermap.org/data/2.5/weather?q={cityname}&units=imperial&appid={apikey}'
     r = requests.get(url).json()
     city_weather = {
-        'city' : 'Tampa',
+        'city' : cityname,
         'temperature' : r['main']['temp'],
         'description' : r['weather'][0]['description'],
         'icon' : r['weather'][0]['icon'],

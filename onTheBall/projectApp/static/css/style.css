@@ -477,8 +477,8 @@ a.main-filled-button {
 }
 
 a.main-filled-button:hover {
-    color: #fff;
-    background-color: #486ff0;
+    color: #486ff0;
+    background-color: #fff;
 }
 
 a.main-button-icon {
